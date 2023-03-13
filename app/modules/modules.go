@@ -1,15 +1,13 @@
 package modules
 
 import (
-	"robbo-assets/package/db_client"
+	"robbo-assets/package/assets"
 )
 
 type HandlerModule struct {
-	//UsersHandler       usershtpp.Handler
+	AssetsHandler assets.Handler
 }
 
-func SetupHandler(postgresClient db_client.PostgresClient) HandlerModule {
-	return HandlerModule{
-		//AuthGateway:        authgateway.SetupAuthGateway(postgresClient),
-	}
+func SetupHandler() HandlerModule {
+	return HandlerModule{}
 }

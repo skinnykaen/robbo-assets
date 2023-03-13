@@ -5,7 +5,6 @@ import (
 	"log"
 	"robbo-assets/app/modules"
 	"robbo-assets/package/config"
-	"robbo-assets/package/db_client"
 	"robbo-assets/package/logger"
 	"robbo-assets/server"
 )
@@ -16,7 +15,6 @@ func InvokeWith(options ...fx.Option) *fx.App {
 	}
 	var di = []fx.Option{
 		fx.Provide(logger.NewLogger),
-		fx.Provide(db_client.NewPostgresClient),
 		fx.Provide(modules.SetupHandler),
 	}
 	for _, option := range options {

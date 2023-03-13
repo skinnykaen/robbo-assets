@@ -21,8 +21,8 @@ func NewServer(lifecycle fx.Lifecycle, handlers modules.HandlerModule) {
 					Addr: viper.GetString("server.address"),
 					Handler: cors.New(
 						cors.Options{
-							AllowedOrigins:   []string{"*"},
-							AllowCredentials: false,
+							AllowedOrigins:   []string{"http://0.0.0.0:8601"},
+							AllowCredentials: true,
 							AllowedMethods: []string{
 								http.MethodGet,
 								http.MethodPost,
@@ -57,6 +57,6 @@ func SetupGinRouter(handlers modules.HandlerModule) *gin.Engine {
 		gin.Recovery(),
 		gin.Logger(),
 	)
-	//handlers.AuthHandler.InitAuthRoutes(router)
+	handlers.AssetsHandler.InitAssetsRoutes(router)
 	return router
 }
