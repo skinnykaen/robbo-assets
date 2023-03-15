@@ -21,10 +21,6 @@ const (
 
 type Handler struct{}
 
-func NewAssetsHandler() Handler {
-	return Handler{}
-}
-
 func (h *Handler) InitAssetsRoutes(router *gin.Engine) {
 	assets := router.Group("/")
 	{
@@ -50,9 +46,6 @@ func (h *Handler) GetAsset(c *gin.Context) {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	//switch md5extParts[1] {
-	//	case
-	//}
 	c.Header("Content-Type", "img/svg+xml")
 	c.Header("Content-Disposition", "attachment; filename=\""+md5ext+"\"")
 	c.Writer.Write(buf)
