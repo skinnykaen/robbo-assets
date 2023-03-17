@@ -19,6 +19,8 @@ const (
 	Png DataFormat = "png"
 )
 
+var DataFormats = []DataFormat{Svg, Wav, Png}
+
 type Handler struct{}
 
 func (h *Handler) InitAssetsRoutes(router *gin.Engine) {
@@ -59,13 +61,27 @@ func (h *Handler) StoreAsset(c *gin.Context) {
 	md5extParts := strings.Split(md5ext, ".")
 	if len(md5extParts) != 2 {
 		log.Print("invalid asset md5ext")
-		c.AbortWithError(http.StatusBadRequest, errors.New("invalid asset md5ext"))
+		c.AbortWithError(
+			http.StatusBadRequest,
+			errors.New("invalid asset md5ext"),
+		)
+		return
+	}
+	if !CheckDataFormat(md5extParts[1]) {
+		log.Print("invalid asset md5ext format")
+		c.AbortWithError(
+			http.StatusBadRequest,
+			errors.New("invalid asset md5ext format"),
+		)
 		return
 	}
 	body, readingErr := io.ReadAll(c.Request.Body)
 	if readingErr != nil {
 		log.Print(readingErr)
-		c.AbortWithError(http.StatusBadRequest, readingErr)
+		c.AbortWithError(
+			http.StatusBadRequest,
+			readingErr,
+		)
 		return
 	}
 	newAssetFile, creatingErr := os.Create("./static/" + md5ext)
@@ -78,4 +94,13 @@ func (h *Handler) StoreAsset(c *gin.Context) {
 	newAssetFile.Close()
 	c.Status(http.StatusOK)
 	return
+}
+
+func CheckDataFormat(format string) bool {
+	for _, role := range DataFormats {
+		if DataFormat(format) == role {
+			return true
+		}
+	}
+	return false
 }
